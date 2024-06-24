@@ -4,6 +4,7 @@ chromedriver
 mysql_data
 .env
 venv
+A_e_B
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

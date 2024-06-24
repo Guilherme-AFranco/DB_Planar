@@ -19,3 +19,17 @@ def media_calibrations_tdsm(path_calib_tdsm_list): #Retorna e plota a média de 
   #display(mean_list)
   #plot_color_map(mean_list)
   return mean_list
+
+def calibrations_tdsm(calib_tdsm_file): #Retorna e plota a média de um conjuto de arquivos tdsm
+  mean_list = []
+  for elements in calib_tdsm_file:
+    if elements.endswith("tdms"):
+      conv = 2/(2**16-1)
+      calib_tdsm = TdmsFile.read(elements).as_dataframe().multiply(-1).multiply(conv)
+      abc, cdf = mean_3(calib_tdsm)
+      mean_list.append(abc)
+  #display(mean_list)
+  #mean_list = pd.concat(mean_list).groupby(level=0).mean()
+  #display(mean_list)
+  #plot_color_map(mean_list)
+  return mean_list
