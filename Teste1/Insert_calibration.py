@@ -55,14 +55,18 @@ with connection:
             lista_varcalib[index][k] = lista_varcalib[index][k].fillna(0)
             lista_varcalib[index][k].columns = lista_varcalib[index][k].columns.str.replace("/'Data'/", "")
             lista_varcalib[index][k].columns = lista_varcalib[index][k].columns.str.replace("'", "")
+            
+            data_list = []
             for idx, row in lista_varcalib[index][k].iterrows():
                 data = (row['Rx00'], row['Rx01'], row['Rx02'], row['Rx03'], row['Rx04'], row['Rx05'], row['Rx06'], row['Rx07'], row['Rx08'], row['Rx09'], row['Rx10'], row['Rx11'], row['Rx12'], row['Rx13'], row['Rx14'], row['Rx15'])
-                with connection.cursor() as cursor:
-                    sql = (
-                        f'INSERT INTO {table_name} '
-                        '(Rx00, Rx01, Rx02, Rx03, Rx04, Rx05, Rx06, Rx07, Rx08, Rx09, Rx10, Rx11, Rx12, Rx13, Rx14, Rx15) '
-                        'VALUES '
-                        '(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) '
-                    )
-                    cursor.execute(sql, data)
-                connection.commit()
+                data_list.append(data)
+
+            with connection.cursor() as cursor:
+                sql = (
+                    f'INSERT INTO {table_name} '
+                    '(Rx00, Rx01, Rx02, Rx03, Rx04, Rx05, Rx06, Rx07, Rx08, Rx09, Rx10, Rx11, Rx12, Rx13, Rx14, Rx15) '
+                    'VALUES '
+                    '(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) '
+                )
+                cursor.executemany(sql, data_list)
+            connection.commit()

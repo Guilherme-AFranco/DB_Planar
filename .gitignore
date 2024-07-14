@@ -5,6 +5,7 @@ mysql_data
 .env
 venv
 A_e_B
+Errados
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
