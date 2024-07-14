@@ -39,6 +39,7 @@ with connection:
                 sql = (
                     f'CREATE TABLE IF NOT EXISTS {table_name} ('
                     'id INT AUTO_INCREMENT PRIMARY KEY, '
+                    'Seconds FLOAT, '
                     'Rx00 FLOAT, Rx01 FLOAT, Rx02 FLOAT, Rx03 FLOAT, '
                     'Rx04 FLOAT, Rx05 FLOAT, Rx06 FLOAT, Rx07 FLOAT, '
                     'Rx08 FLOAT, Rx09 FLOAT, Rx10 FLOAT, Rx11 FLOAT, '
@@ -58,15 +59,15 @@ with connection:
             
             data_list = []
             for idx, row in lista_varcalib[index][k].iterrows():
-                data = (row['Rx00'], row['Rx01'], row['Rx02'], row['Rx03'], row['Rx04'], row['Rx05'], row['Rx06'], row['Rx07'], row['Rx08'], row['Rx09'], row['Rx10'], row['Rx11'], row['Rx12'], row['Rx13'], row['Rx14'], row['Rx15'])
+                data = (row['Seconds'], row['Rx00'], row['Rx01'], row['Rx02'], row['Rx03'], row['Rx04'], row['Rx05'], row['Rx06'], row['Rx07'], row['Rx08'], row['Rx09'], row['Rx10'], row['Rx11'], row['Rx12'], row['Rx13'], row['Rx14'], row['Rx15'])
                 data_list.append(data)
 
             with connection.cursor() as cursor:
                 sql = (
                     f'INSERT INTO {table_name} '
-                    '(Rx00, Rx01, Rx02, Rx03, Rx04, Rx05, Rx06, Rx07, Rx08, Rx09, Rx10, Rx11, Rx12, Rx13, Rx14, Rx15) '
+                    '(Seconds, Rx00, Rx01, Rx02, Rx03, Rx04, Rx05, Rx06, Rx07, Rx08, Rx09, Rx10, Rx11, Rx12, Rx13, Rx14, Rx15) '
                     'VALUES '
-                    '(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) '
+                    '(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) '
                 )
                 cursor.executemany(sql, data_list)
             connection.commit()

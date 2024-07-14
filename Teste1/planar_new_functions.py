@@ -4,6 +4,7 @@ from IPython.display import display
 import pandas as pd
 #import numpy as np # Precisa apenas para a func mean_3 # versão atualizada não precisa
 import os
+import numpy as np
 
 from planar_functions import *
 
@@ -39,7 +40,15 @@ def media_calibrations_tdsm(path_calib_tdsm_list): #Retorna e plota a média de 
 
 def process_file(file):
     if file.endswith("tdms"):
-        return TdmsFile.read(file).as_dataframe()
+      df = TdmsFile.read(file).as_dataframe()
+      if df is not None:
+        # Calcula os valores da coluna de segundos
+        num_rows = len(df)
+        interval = 2 / (2**16 - 1)
+        seconds = np.arange(0, num_rows * interval, interval)[:num_rows]
+        # Adiciona a coluna de segundos ao DataFrame
+        df.insert(0, 'Seconds', seconds)
+      return df
 
 def calibrations_tdsm(calib_tdsm_file): 
     mean_list = []
